@@ -11,8 +11,8 @@ print("Syslog Server has started")
 while 1==1:
     recData, recAdd = sysSOCKET.recvfrom(sysBUFFER)
     stringRecieved = recData.decode('utf-8')
+    sourceIP = recAdd[0]
     if sysFilter in stringRecieved:
-        sourceIP = recAdd[0]
         splitCommand = stringRecieved.split(" ", 1)
         the_file = open(splitCommand[1],"w")
         sysSOCKET.close()
@@ -26,5 +26,10 @@ while 1==1:
             else:
                 break
         secondSocket.close()
+    else:
+        logsDirectory = "/home/osboxes/Desktop/Logs/"
+        fileDest = logsDirectory + sourceIP + ".txt"
+        the_file = open(fileDest,"w")
+        the_file.write(stringRecieved)
 
 sysSOCKET.close()
